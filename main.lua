@@ -43,14 +43,15 @@ SMODS.Consumable{
 	use = function(self, card, context, copier)
         G.E_MANAGER:add_event(Event({
             func = function()
-				local card = SMODS.add_card {
-					set = 'Joker',
-					area = G.jokers,
-					legendary = false,
-					rarity = 'jmrcrd_album',
-					skip_materialize = false
-				}
-
+				if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
+					local card = SMODS.add_card {
+						set = 'Joker',
+						area = G.jokers,
+						legendary = false,
+						rarity = 'jmrcrd_album',
+						skip_materialize = false
+					}
+				end
 				return true
             end
         }))
@@ -66,7 +67,7 @@ SMODS.Rarity{
 		name = 'Album'
 	},
 	badge_colour = HEX('424240'),
-	default_weight = 0.5,
+	default_weight = 0.075,
 	pools = {["Joker"] = true}
 }
 SMODS.Joker{
@@ -97,17 +98,19 @@ SMODS.Joker{
 	end,
 	calculate = function(self,card,context)
 		if context.joker_main then
-			local hearts = true
-			for _, v in ipairs(context.scoring_hand) do
-  				hearts = hearts and v:is_suit('Hearts')
-  				if not hearts then break end
-			end
-			if hearts == true then
-				return {
-                    Xmult_mod = card.ability.extra.Xmult,
-                    message = 'X' .. card.ability.extra.Xmult,
-                    colour = G.C.MULT
+			if next(context.poker_hands["Flush"]) then
+				local hearts = true
+				for _, v in ipairs(context.scoring_hand) do
+  					hearts = hearts and v:is_suit('Hearts')
+  					if not hearts then break end
+				end
+				if hearts == true then
+					return {
+                    	Xmult_mod = card.ability.extra.Xmult,
+                    	message = 'X' .. card.ability.extra.Xmult,
+                   		colour = G.C.MULT
                     }
+				end
 			end
 		end		
 	end
@@ -140,17 +143,19 @@ SMODS.Joker{
 	end,
 	calculate = function(self,card,context)
 		if context.joker_main then
-			local spades = true
-			for _, v in ipairs(context.scoring_hand) do
-  				spades = spades and v:is_suit('Spades')
-  				if not spades then break end
-			end
-			if spades == true then
-				return {
-                    Xmult_mod = card.ability.extra.Xmult,
-                    message = 'X' .. card.ability.extra.Xmult,
-                    colour = G.C.MULT
+			if next(context.poker_hands["Flush"]) then
+				local spades = true
+				for _, v in ipairs(context.scoring_hand) do
+  					spades = spades and v:is_suit('Spades')
+  					if not spades then break end
+				end
+				if spades == true then
+					return {
+                   		Xmult_mod = card.ability.extra.Xmult,
+                    	message = 'X' .. card.ability.extra.Xmult,
+                    	colour = G.C.MULT
                     }
+				end
 			end
 		end		
 	end
@@ -183,17 +188,19 @@ SMODS.Joker{
 	end,
 	calculate = function(self,card,context)
 		if context.joker_main then
-			local diamonds = true
-			for _, v in ipairs(context.scoring_hand) do
-  				diamonds = diamonds and v:is_suit('Diamonds')
-  				if not diamonds then break end
-			end
-			if diamonds == true then
-				return {
-                    Xmult_mod = card.ability.extra.Xmult,
-                    message = 'X' .. card.ability.extra.Xmult,
-                    colour = G.C.MULT
+			if next(context.poker_hands["Flush"]) then
+				local diamonds = true
+				for _, v in ipairs(context.scoring_hand) do
+  					diamonds = diamonds and v:is_suit('Diamonds')
+  					if not diamonds then break end
+				end
+				if diamonds == true then
+					return {
+                    	Xmult_mod = card.ability.extra.Xmult,
+                    	message = 'X' .. card.ability.extra.Xmult,
+                    	colour = G.C.MULT
                     }
+				end
 			end
 		end		
 	end
@@ -226,17 +233,19 @@ SMODS.Joker{
 	end,
 	calculate = function(self,card,context)
 		if context.joker_main then
-			local clubs = true
-			for _, v in ipairs(context.scoring_hand) do
-  				clubs = clubs and v:is_suit('Clubs')
-  				if not clubs then break end
-			end
-			if clubs == true then
-				return {
-                    Xmult_mod = card.ability.extra.Xmult,
-                    message = 'X' .. card.ability.extra.Xmult,
-                    colour = G.C.MULT
+			if next(context.poker_hands["Flush"]) then
+				local clubs = true
+				for _, v in ipairs(context.scoring_hand) do
+  					clubs = clubs and v:is_suit('Clubs')
+  					if not clubs then break end
+				end
+				if clubs == true then
+					return {
+                    	Xmult_mod = card.ability.extra.Xmult,
+                   		message = 'X' .. card.ability.extra.Xmult,
+                    	colour = G.C.MULT
                     }
+				end
 			end
 		end		
 	end
@@ -380,7 +389,6 @@ SMODS.Joker{
 				  return {
 					dollars = bonus,
 					card = context.other_card,
-					play_sound("jmrcrd_bumpin")
 				  }
 				end
 			end
@@ -393,9 +401,9 @@ SMODS.Joker{
 		name = 'Good and Evil',
 		text = {
 			'{C:green}#2# in #3#{} chance that', 
-			'played {C:spades}Spade{} cards give {X:mult,C:white}X#1#{} mult',
+			'played {C:clubs}Club{} cards give {X:mult,C:white}X#1#{} mult',
 			'{C:green}#2# in #3#{} chance that', 
-			'played {C:diamonds}Diamond{} cards give {X:mult,C:white}X#1#{} mult',
+			'played {C:hearts}Heart{} cards give {X:mult,C:white}X#1#{} mult',
 		}
 	},
 	config = {extra = {Xmult = 1.5, odds = 2}},
@@ -414,7 +422,7 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if pseudorandom('and') < G.GAME.probabilities.normal / card.ability.extra.odds then
-				if context.other_card:is_suit('Spades') then
+				if context.other_card:is_suit('Clubs') then
 					return{
 						Xmult_mod = card.ability.extra.Xmult,
 						message = 'X' .. card.ability.extra.Xmult,
@@ -422,7 +430,7 @@ SMODS.Joker{
 					}
 				end
 			else
-		  		if context.other_card:is_suit('Diamonds') then
+		  		if context.other_card:is_suit('Hearts') then
 					return{
 						Xmult_mod = card.ability.extra.Xmult,
 						message = 'X' .. card.ability.extra.Xmult,
@@ -438,9 +446,8 @@ SMODS.Joker{
 	loc_txt = {
 		name = 'Dark Side',
 		text = {
-			'All played cards become ',
-			'{C:attention}Wild Cards{} if no face cards',
-			'are played.'
+			'All played {C:attention}Non-face{} cards become ',
+			'{C:attention}Wild Cards{}'
 		}
 	},
 	atlas = 'Records',
@@ -482,8 +489,8 @@ SMODS.Joker{
 	loc_txt = {
 		name = 'Midwest Royalty',
 		text = {
-			'{X:mult,C:white}X#1#{} Mult if played hand',
-			'contains the {C:hearts}Queen of Hearts{}'
+			'{X:mult,C:white}X#1#{} Mult every time',
+			'a {C:hearts}Queen of Hearts{} is scored.'
 		}
 	},
 	atlas = 'Records',
