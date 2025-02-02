@@ -5,7 +5,13 @@
 --- MOD_DESCRIPTION: Extra jokers based off of various albums and music artists.
 --- BADGE_COLOR: daa54e
 --- PREFIX: jmrcrd
+--- VERSION: 1.2.1
 
+SMODS.current_mod.optional_features = function()
+    return {
+        retrigger_joker = true
+    }
+end
 SMODS.Atlas{
     key = 'Records', --atlas key
     path = 'Records.png', --atlas' path in (yourMod)/assets/1x or (yourMod)/assets/2x
@@ -819,6 +825,445 @@ SMODS.Joker{
 						colour = G.C.MULT,
 					}
 				end
+			end
+		end
+	end
+}
+SMODS.Joker{
+	key = 'stank',
+	loc_txt = {
+		name = 'Jimbkonia',
+		text = {
+			'Gains {C:chips}+#2#{} Chips',
+			'for each {C:spades}Spade{C:attention} card',
+			'{C:attention}scored{}.',
+			'{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)'
+		}
+	},
+	config = { extra = { chips = 0, chip_gain = 5 } },
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = false, 
+    eternal_compat = true, 
+    perishable_compat = true,
+	pos = {x = 1, y = 2},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.chips, card.ability.extra.chip_gain } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+		  return {
+			chip_mod = card.ability.extra.chips,
+			message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }
+		  }
+		end
+
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:is_suit('Spades') and not context.blueprint then	
+				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_gain
+      			return {
+        			message = 'Upgraded!',
+        			colour = G.C.CHIPS,
+        			card = card
+      			}
+			end
+   		end
+	end	
+}
+SMODS.Joker{
+	key = 'starboy',
+	loc_txt = {
+		name = 'Starjoker',
+		text = {
+			'Gains {C:mult}+#2#{} Mult',
+			'for each {C:hearts}Heart{C:attention} card',
+			'{C:attention}scored{}.',
+			'{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)'
+		}
+	},
+	config = { extra = { mult = 0, mult_gain = 5 } },
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true, 
+    eternal_compat = true, 
+    perishable_compat = true,
+	pos = {x = 2, y = 2},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+		  return {
+			mult_mod = card.ability.extra.mult,
+			message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+		  }
+		end
+
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:is_suit('Hearts') and not context.blueprint then	
+				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
+      			return {
+        			message = 'Upgraded!',
+        			colour = G.C.MULT,
+        			card = card
+      			}
+			end
+   		end
+	end	
+}
+SMODS.Joker{
+	key = 'nwts',
+	loc_txt = {
+		name = 'Never the Same',
+		text = {
+			'Gains {C:chips}+#2#{} Chips',
+			'for each {C:clubs}Club{C:attention} card',
+			'{C:attention}scored{}.',
+			'{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)'
+		}
+	},
+	config = { extra = { chips = 0, chip_gain = 5 } },
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true, 
+    eternal_compat = true, 
+    perishable_compat = true,
+	pos = {x = 3, y = 2},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.chips, card.ability.extra.chip_gain } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+		  return {
+			chip_mod = card.ability.extra.chips,
+			message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }
+		  }
+		end
+
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:is_suit('Clubs') and not context.blueprint then	
+				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_gain
+      			return {
+        			message = 'Upgraded!',
+        			colour = G.C.CHIPS,
+        			card = card
+      			}
+			end
+   		end
+	end	
+}
+SMODS.Joker{
+	key = 'orange',
+	loc_txt = {
+		name = 'Orange Static',
+		text = {
+			'Gains {C:mult}+#2#{} Mult',
+			'for each {C:diamonds}Diamond{C:attention} card',
+			'{C:attention}scored{}.',
+			'{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)'
+		}
+	},
+	config = { extra = { mult = 0, mult_gain = 5 } },
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true, 
+    eternal_compat = true, 
+    perishable_compat = true,
+	pos = {x = 4, y = 2},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+		  return {
+			mult_mod = card.ability.extra.mult,
+			message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+		  }
+		end
+
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:is_suit('Diamonds') and not context.blueprint then	
+				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
+      			return {
+        			message = 'Upgraded!',
+        			colour = G.C.MULT,
+        			card = card
+      			}
+			end
+   		end
+	end	
+}
+SMODS.Joker{
+	key = 'damn',
+	loc_txt = {
+		name = 'JOKER.',
+		text = {
+			'Retriggers all cards if',
+			'played hand is a',
+			'{C:attention}Straight{}.',
+		}
+	},
+	config = { extra = { repetitions = 1 } },
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true, 
+    eternal_compat = true, 
+    perishable_compat = true,
+	pos = {x = 5, y = 0},
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+			if next(context.poker_hands["Straight"]) then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = card.ability.extra.repetitions,
+					card = card
+				}
+			end
+		end
+	end
+}
+SMODS.Joker{
+	key = 'jokaz',
+	loc_txt = {
+		name = 'Joker Days',
+		text = {
+			'Played cards with the',
+			'{V:1}#2#{} suit give',
+			'{C:mult}+#1#{} mult.',
+			'Suit changes every round'
+		}
+	},
+	config = {extra = {mult = 8}},
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
+	pos = {x = 6 , y = 0},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 
+		  card.ability.extra.mult, 
+		  localize(G.GAME.current_round.jokaz_card.suit, 'suits_singular'), 
+		  colours = {G.C.SUITS[G.GAME.current_round.jokaz_card.suit]} 
+		}}
+	  end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+			if context.other_card:is_suit(G.GAME.current_round.jokaz_card.suit) then
+				return {
+					mult_mod = card.ability.extra.mult,
+					message = '+' .. card.ability.extra.mult,
+        			colour = G.C.MULT,
+					card = card
+				}
+			end
+		end
+	end
+}
+
+local igo = Game.init_game_object
+function Game:init_game_object()
+  local ret = igo(self)
+  ret.current_round.jokaz_card = { suit = 'Spades' } 
+  return ret
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+  -- The suit changes every round, so we use reset_game_globals to choose a suit.
+  G.GAME.current_round.jokaz_card = { suit = 'Spades' }
+  local valid_jokaz_cards = {}
+  for _, v in ipairs(G.playing_cards) do
+    if not SMODS.has_no_suit(v) then -- Abstracted enhancement check for jokers being able to give cards additional enhancements
+        valid_jokaz_cards[#valid_jokaz_cards+1] = v
+    end
+  end
+  if valid_jokaz_cards[1] then 
+      local jokaz_card = pseudorandom_element(valid_jokaz_cards, pseudoseed('2cas'..G.GAME.round_resets.ante))
+      G.GAME.current_round.jokaz_card.suit = jokaz_card.base.suit
+  end
+end
+
+SMODS.Joker{
+	key = 'badjokeday',
+	loc_txt = {
+		name = 'Bad Humor Day',
+		text = {
+			'{C:attention}Jokers{} have a',
+			'{C:green}#1# in #2# chance{} to retrigger.'
+		}
+	},
+	config = {extra = {odds = 8, repetitions = 1}},
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	pos = {x = 7 , y = 0},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 
+			(G.GAME.probabilities.normal or 1), 
+			card.ability.extra.odds
+		}}
+	  end,
+	calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker then
+			if pseudorandom('badjokeday') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = 1,
+					card = card
+				}
+			end
+		end
+	end
+}
+SMODS.Joker{
+	key = 'liar',
+	loc_txt = {
+		name = 'The Liar',
+		text = {
+			'After every {C:attention}5{} rounds,',
+			'this joker gains {X:mult,C:white}X#2#{} mult.',
+			'{C:green}#3# in #4#{} chance joker',
+			'is {C:attention}destroyed{} at',
+			'end of round.',
+			'{C:inactive}Currently {X:mult,C:white}X#1#{C:inactive} mult,',
+			'{C:attention}#5#{C:inactive}/5 rounds completed.'
+		}
+	},
+	config = {extra = {
+		Xmult = 1, 
+		Xmult_gain = 1, 
+		odds = 10,
+		roundslied = 0
+	}},
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 7,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	pos = {x = 8 , y = 0},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 
+			card.ability.extra.Xmult, card.ability.extra.Xmult_gain, (G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.roundslied
+		}}
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				Xmult_mod = card.ability.extra.Xmult,
+                message = 'X' .. card.ability.extra.Xmult,
+            	colour = G.C.MULT
+			}
+		end
+
+		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint then
+			card.ability.extra.roundslied = card.ability.extra.roundslied + 1
+			if card.ability.extra.roundslied >= 5 then
+				card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_gain
+				card.ability.extra.roundslied = 0
+				return {
+					message = 'X' .. card.ability.extra.Xmult,
+					colour = G.C.MULT
+				}
+			end
+			if pseudorandom('liar') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				-- This part plays the animation.
+				G.E_MANAGER:add_event(Event({
+				  func = function()
+					play_sound('tarot1')
+					card.T.r = -0.2
+					card:juice_up(0.3, 0.4)
+					card.states.drag.is = true
+					card.children.center.pinch.x = true
+					-- This part destroys the card.
+					G.E_MANAGER:add_event(Event({
+					  trigger = 'after',
+					  delay = 0.3,
+					  blockable = false,
+					  func = function()
+						G.jokers:remove_card(card)
+						card:remove()
+						card = nil
+						return true;
+					  end
+					}))
+					return true
+				  end
+				}))
+				return {
+				  message = 'Deleted!'
+				}
+			  else
+				return {
+				  message = 'Delayed!'
+				}
+			end
+		end
+	end
+}
+SMODS.Joker{
+	key = 'lowend',
+	loc_txt = {
+		name = 'The Low End',
+		text = {
+			'Played {C:attention}2s{}, {C:attention}3s{}, {C:attention}4s{}, and {C:attention}5s{}',
+			'give {C:mult}+#1#{} mult.',
+			'Played {C:hearts}Heart{} versions',
+			'of those ranks have',
+			'a {C:green}#2# in #3#{} chance to give another {C:mult}+#1#{} mult.'
+		}
+	},
+	config = {extra = {
+		mult = 9,
+		odds = 2
+	}},
+	atlas = 'Records',
+	rarity = 'jmrcrd_album',
+	cost = 5,
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	pos = {x = 9 , y = 0},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 
+			card.ability.extra.mult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds
+		}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.individual then
+			if context.other_card:get_id() == 2 or context.other_card:get_id() == 3 or context.other_card:get_id() == 4 or context.other_card:get_id() == 5 then
+				local ret = { mult = card.ability.extra.mult }
+				if context.other_card:is_suit('Hearts') and pseudorandom('lowend') < G.GAME.probabilities.normal / card.ability.extra.odds then
+  					ret.extra = { mult = card.ability.extra.mult }
+				end
+				return ret
 			end
 		end
 	end
